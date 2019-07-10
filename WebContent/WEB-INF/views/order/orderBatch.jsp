@@ -44,23 +44,30 @@
                            aria-describedby="dynamic-table_info" style="font-size:14px">
                         <thead>
                         <tr role="row">
-                            <th tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1">
-                                姓名
-                            </th>
-                            <th tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1">
-                                所属部门
-                            </th>
-                            <th tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1">
-                                邮箱
-                            </th>
-                            <th tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1">
-                                电话
-                            </th>
-                            <th tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1">
-                                状态
-                            </th>
-                            <th class="sorting_disabled" rowspan="1" colspan="1" aria-label=""></th>
-                        </tr>
+									<input type="hidden" id="id" name="id" class="id" />
+									<th tabindex="0" class="batchStart-th" aria-controls="dynamic-table" rowspan="1"
+										colspan="1">批量选择</th>
+									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
+										colspan="1">产品自编号</th>
+									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
+										colspan="1">产品名称</th>
+									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
+										colspan="1">图号</th>
+									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
+										colspan="1">材料名称</th>
+									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
+										colspan="1">材料来源</th>
+									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
+										colspan="1">来料预期</th>
+									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
+										colspan="1">合同交期</th>
+									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
+										colspan="1">状态</th>
+									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
+										colspan="1">备注</th>
+									<th class="sorting_disabled" rowspan="1" colspan="1"
+										aria-label="">操作</th>
+								</tr>
                         </thead>
                         <tbody id="orderList">
                         	

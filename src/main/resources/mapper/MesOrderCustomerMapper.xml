@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.haoyu.dao.MesOrderCustomerMapper">
-  <resultMap id="BaseResultMap" type="com.haoyu.model.MesOrder" >
+<mapper namespace="com.mes.dao.MesOrderCustomerMapper">
+  <resultMap id="BaseResultMap" type="com.mes.model.MesOrder" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="order_id" property="orderId" jdbcType="VARCHAR" />
     <result column="order_clientname" property="orderClientname" jdbcType="VARCHAR" />

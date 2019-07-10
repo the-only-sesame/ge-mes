@@ -27,8 +27,8 @@ public class OrderService {
 	private MesOrderMapper mesOrderMapper;
 	@Resource
 	private SqlSession sqlSession;
-	@Resource
-	private PlanService planService;
+//	@Resource
+//	private PlanService planService;
 	@Resource
 	private MesOrderCustomerMapper mesOrderCustomerMapper;
 
@@ -62,9 +62,9 @@ public class OrderService {
 				mesOrder.setOrderOperateIp("127.0.0.1");
 				mesOrder.setOrderOperateTime(new Date());
 				// 批量添加未启动订单
-				if (mesOrder.getOrderStatus() == 1) {
-					planService.prePlan(mesOrder);
-				}
+//				if (mesOrder.getOrderStatus() == 1) {
+//					planService.prePlan(mesOrder);
+//				}
 				mesOrderBatchMapper.insertSelective(mesOrder);
 			} catch (Exception e) {
 				throw new SysMineException("创建过程有问题");
