@@ -6,8 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mes.beans.PageQuery;
+import com.mes.beans.PageResult;
 import com.mes.common.JsonData;
+import com.mes.model.MesOrder;
 import com.mes.param.MesOrderVo;
+import com.mes.param.SearchOrderParam;
 import com.mes.service.OrderService;
 
 @Controller
@@ -24,8 +28,16 @@ public class OrderController {
 		return FPATH+"orderBatch";
 	}
 	
-	//Ôö¼ÓÊı¾İ
-	//Ìí¼Ó½ÓÊÕjsonÊı¾İµÄ×¢½â
+	
+	@ResponseBody
+	@RequestMapping("/order.json")
+	public JsonData searchPage(SearchOrderParam param,PageQuery page) {
+		PageResult<MesOrder> pr=(PageResult<MesOrder>) orderService.searchPageList(param, page);
+    	return JsonData.success(pr);
+	}
+	
+	
+	//æ·»åŠ æ¥æ”¶jsonæ•°æ®çš„æ³¨è§£
 	@ResponseBody
 	@RequestMapping("/insert.json")
 	public JsonData insertAjax(MesOrderVo mesOrderVo) {
@@ -33,4 +45,35 @@ public class OrderController {
 		return JsonData.success();
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

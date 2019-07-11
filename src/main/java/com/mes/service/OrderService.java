@@ -7,21 +7,27 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;
 
+import com.mes.beans.PageQuery;
+import com.mes.beans.PageResult;
 import com.mes.dao.MesOrderCustomerMapper;
 import com.mes.dao.MesOrderMapper;
+import com.mes.dto.SearchOrderDto;
+import com.mes.exception.ParamException;
 import com.mes.exception.SysMineException;
 import com.mes.model.MesOrder;
 import com.mes.param.MesOrderVo;
+import com.mes.param.SearchOrderParam;
 import com.mes.util.BeanValidator;
 import com.mes.util.MyStringUtils;
 
 
 @Service
 public class OrderService {
-	//Ò»¿ªÊ¼¾Í¶¨ÒåÒ»¸öidÉú³ÉÆ÷
+	// ä¸€å¼€å§‹å°±å®šä¹‰ä¸€ä¸ªidç”Ÿæˆå™¨
 	private IdGenerator ig = new IdGenerator();
 	@Resource
 	private MesOrderMapper mesOrderMapper;
@@ -31,20 +37,59 @@ public class OrderService {
 //	private PlanService planService;
 	@Resource
 	private MesOrderCustomerMapper mesOrderCustomerMapper;
+	
+	
+	
+	public Object searchPageList(SearchOrderParam param, PageQuery page) {
+		// éªŒè¯é¡µç æ˜¯å¦ä¸ºç©º
+		BeanValidator.check(page);
+		// å°†paramä¸­çš„å­—æ®µä¼ å…¥dtoè¿›è¡Œæ•°æ®å±‚çš„äº¤äº’
+				// è‡ªå®šä¹‰çš„æ•°æ®æ¨¡å‹ï¼Œç”¨æ¥ä¸æ•°æ®åº“è¿›è¡Œäº¤äº’æ“ä½œ
+				// searchDto ç”¨äºåˆ†é¡µçš„whereè¯­å¥åé¢
+				SearchOrderDto dto = new SearchOrderDto();
+				// copyparamä¸­çš„å€¼è¿›å…¥dto
+				if (StringUtils.isNotBlank(param.getKeyword())) {
+					dto.setKeyword("%" + param.getKeyword() + "%");
+				}
+				if (StringUtils.isNotBlank(param.getSearch_status())) {
+					dto.setSearch_status(Integer.parseInt(param.getSearch_status()));
+				}
+				try {
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+					if (StringUtils.isNotBlank(param.getFromTime())) {
+						dto.setFromTime(dateFormat.parse(param.getFromTime()));
+					}
+					if (StringUtils.isNotBlank(param.getToTime())) {
+						dto.setToTime(dateFormat.parse(param.getToTime()));
+					}
+				} catch (Exception e) {
+					throw new ParamException("ä¼ å…¥çš„æ—¥æœŸæ ¼å¼æœ‰é—®é¢˜ï¼Œæ­£ç¡®æ ¼å¼ä¸ºï¼šyyyy-MM-dd");
+				}
+
+				int count = mesOrderCustomerMapper.countBySearchDto(dto);
+				if (count > 0) {
+					List<MesOrder> orderList = mesOrderCustomerMapper.getPageListBySearchDto(dto, page);
+					return PageResult.<MesOrder>builder().total(count).data(orderList).build();
+				}
+
+				return PageResult.<MesOrder>builder().build();
+	}
+	
+	
 
 	public void orderBatchInserts(MesOrderVo mesOrderVo) {
-		//Êı¾İĞ£Ñé
+		//ï¿½ï¿½ï¿½ï¿½Ğ£ï¿½ï¿½
 		BeanValidator.check(mesOrderVo);
-		//ÏÈÈ¥ÅĞ¶ÏÊÇ·ñÊÇÅúÁ¿Ìí¼Ó
+		//ï¿½ï¿½È¥ï¿½Ğ¶ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		Integer counts = mesOrderVo.getCount();
-		//¸ù¾İcountsµÄ¸öÊı£¬Éú³ÉĞèÒªÌí¼ÓµÄidsµÄÊı¾İ¼¯ºÏ
+		//ï¿½ï¿½ï¿½ï¿½countsï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½Óµï¿½idsï¿½ï¿½ï¿½ï¿½ï¿½İ¼ï¿½ï¿½ï¿½
 		//zx190001 zx190003
 		List<String> ids = createOrderIdsDefault(Long.valueOf(counts));
-		//sqlµÄÅúÁ¿Ìí¼Ó´¦Àí
+		//sqlï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó´ï¿½ï¿½ï¿½
 		MesOrderMapper mesOrderBatchMapper = sqlSession.getMapper(MesOrderMapper.class);
 		for (String orderid : ids) {
 			try {
-				// ½«vo×ª»»Îªpo
+				// ï¿½ï¿½vo×ªï¿½ï¿½Îªpo
 				MesOrder mesOrder = MesOrder.builder().orderId(orderid)
 						.orderClientname(mesOrderVo.getOrderClientname())//
 						.orderProductname(mesOrderVo.getOrderProductname()).orderContractid(mesOrderVo.getOrderContractid())//
@@ -56,23 +101,23 @@ public class OrderService {
 						.orderHurrystatus(mesOrderVo.getOrderHurrystatus()).orderStatus(mesOrderVo.getOrderStatus())
 						.orderRemark(mesOrderVo.getOrderRemark()).build();
 
-				// ÉèÖÃÓÃ»§µÄµÇÂ¼ĞÅÏ¢
+				// è®¾ç½®ç”¨æˆ·çš„ç™»å½•ä¿¡æ¯
 				// TODO
 				mesOrder.setOrderOperator("tom");
 				mesOrder.setOrderOperateIp("127.0.0.1");
 				mesOrder.setOrderOperateTime(new Date());
-				// ÅúÁ¿Ìí¼ÓÎ´Æô¶¯¶©µ¥
+				// æ‰¹é‡æ·»åŠ æœªå¯åŠ¨è®¢å•
 //				if (mesOrder.getOrderStatus() == 1) {
 //					planService.prePlan(mesOrder);
 //				}
 				mesOrderBatchMapper.insertSelective(mesOrder);
 			} catch (Exception e) {
-				throw new SysMineException("´´½¨¹ı³ÌÓĞÎÊÌâ");
+				throw new SysMineException("åˆ›å»ºè¿‡ç¨‹æœ‰é—®é¢˜");
 			}
 		}
 	}
 
-	//»ñÈ¡id¼¯ºÏ
+	//ï¿½ï¿½È¡idï¿½ï¿½ï¿½ï¿½
 	public List<String> createOrderIdsDefault(Long ocounts){
 		if(ig == null) {
 			ig = new IdGenerator();
@@ -82,17 +127,17 @@ public class OrderService {
 		ig.clear();
 		return list;
 	}
-	// »ñÈ¡Êı¾İ¿âËùÓĞµÄÊıÁ¿
+	// ï¿½ï¿½È¡ï¿½ï¿½ï¿½İ¿ï¿½ï¿½ï¿½ï¿½Ğµï¿½ï¿½ï¿½ï¿½ï¿½
 		public Long getOrderCount() {
 			return mesOrderCustomerMapper.getOrderCount();
 		}
 	
 ///////////////////////////////////////////////////////////////////////////////////////////////
-// 1 Ä¬ÈÏÉú³É´úÂë
-// 2 ÊÖ¹¤Éú³É´úÂë
-// idÉú³ÉÆ÷
+// 1 Ä¬ï¿½ï¿½ï¿½ï¿½ï¿½É´ï¿½ï¿½ï¿½
+// 2 ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½É´ï¿½ï¿½ï¿½
+// idï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 class IdGenerator {
-// ÊıÁ¿ÆğÊ¼Î»ÖÃ
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼Î»ï¿½ï¿½
 private Long currentdbidscount;
 private List<String> ids = new ArrayList<String>();
 private String idpre;
@@ -154,12 +199,12 @@ return this.ids;
 
 //
 private String getIdAfter(int addcount) {
-// ÏµÍ³Ä¬ÈÏÉú³É5Î» ZX1700001
+// ÏµÍ³Ä¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½5Î» ZX1700001
 int goallength = 5;
-// »ñÈ¡Êı¾İ¿âorderµÄ×ÜÊıÁ¿+1+Ñ­»·´ÎÊı(addcount)
+// ï¿½ï¿½È¡ï¿½ï¿½ï¿½İ¿ï¿½orderï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½+1+Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(addcount)
 int count = this.currentdbidscount.intValue() + 1 + addcount;
 StringBuilder sBuilder = new StringBuilder("");
-// ¼ÆËãÓë5Î»ÊıµÄ²îÖµ
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½5Î»ï¿½ï¿½ï¿½Ä²ï¿½Öµ
 int length = goallength - new String(count + "").length();
 for (int i = 0; i < length; i++) {
 sBuilder.append("0");
@@ -189,7 +234,9 @@ this.ids = null;
 public String toString() {
 return "IdGenerator [ids=" + ids + "]";
 }
-}	
+}
+
+	
 	
 }
 
