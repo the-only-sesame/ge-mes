@@ -28,6 +28,11 @@ public class OrderController {
 		return FPATH+"orderBatch";
 	}
 	
+	@RequestMapping("/order.page")
+	public String orderPage() {
+		return FPATH+"order";
+	}
+	
 	
 	@ResponseBody
 	@RequestMapping("/order.json")
