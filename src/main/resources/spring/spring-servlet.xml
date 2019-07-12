@@ -18,6 +18,7 @@
     <mvc:resources location="/assets/" mapping="/assets/**"/>
     <mvc:resources location="/ztree/" mapping="/ztree/**"/>
     <mvc:resources location="/WEB-INF/views/order/" mapping="/order/**"/>
+    <mvc:resources location="/WEB-INF/views/plan/" mapping="/plan/**"/>
 
 	<!-- 配置视图解析器 -->
     <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
