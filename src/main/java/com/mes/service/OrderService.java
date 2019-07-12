@@ -33,10 +33,23 @@ public class OrderService {
 	private MesOrderMapper mesOrderMapper;
 	@Resource
 	private SqlSession sqlSession;
-	// @Resource
-	// private PlanService planService;
+    @Resource
+    private PlanService planService;
 	@Resource
 	private MesOrderCustomerMapper mesOrderCustomerMapper;
+	
+	
+	
+	
+	public void batchStart(String ids) {
+		if(ids != null && ids.length() >0) {
+			//批量处理的 sqlSession代理
+			String[] idArray = ids.split("&");
+			mesOrderCustomerMapper.batchStart(idArray);
+			planService.startPlansByOrderIds(idArray);
+		}
+	}
+
 	
 	//更新操作
 	public void update(MesOrderVo mesOrderVo) {
@@ -263,6 +276,7 @@ public class OrderService {
 		}
 	}
 
+	
 	
 
 }

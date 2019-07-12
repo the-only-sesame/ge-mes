@@ -33,6 +33,15 @@ public class OrderController {
 		return FPATH+"order";
 	}
 	
+	//批量启动
+	@ResponseBody
+	@RequestMapping("/orderBatchStart.json")
+	public JsonData orderBatchStart(String ids) {
+		orderService.batchStart(ids);
+		return JsonData.success();
+	}
+	
+	
 	
 	@ResponseBody
 	@RequestMapping("/order.json")
