@@ -104,6 +104,7 @@
 		</div>
 	</div>
 <%@ include file="orderBatchForm.jsp" %>
+<%@ include file="orderUpdateForm.jsp" %>
 <script type="text/javascript" src="orderBatch.js"></script>
 </body>
 </html>

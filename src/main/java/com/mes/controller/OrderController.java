@@ -45,7 +45,13 @@ public class OrderController {
 		return JsonData.success();
 	}
 	
-	
+	//更新操作
+	@ResponseBody
+	@RequestMapping("/update.json")
+	public JsonData updateOrder(MesOrderVo mesOrderVo) {
+		orderService.update(mesOrderVo);
+		return JsonData.success();
+	}
 	
 	
 	
