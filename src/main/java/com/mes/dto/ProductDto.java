@@ -29,6 +29,8 @@ public class ProductDto {
 	
     private Integer id;
 
+    private Integer productConsume;
+    
     private Integer pId;
 
     private String productId;

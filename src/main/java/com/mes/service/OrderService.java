@@ -156,7 +156,7 @@ public class OrderService {
 		}
 	}
 
-	// ��ȡid����
+	// 获取id集合
 	public List<String> createOrderIdsDefault(Long ocounts) {
 		if (ig == null) {
 			ig = new IdGenerator();
@@ -167,17 +167,13 @@ public class OrderService {
 		return list;
 	}
 
-	// ��ȡ���ݿ����е�����
+	// 获取数据库所有的数量
 	public Long getOrderCount() {
 		return mesOrderCustomerMapper.getOrderCount();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	// 1 Ĭ�����ɴ���
-	// 2 �ֹ����ɴ���
-	// id������
 	class IdGenerator {
-		// ������ʼλ��
 		private Long currentdbidscount;
 		private List<String> ids = new ArrayList<String>();
 		private String idpre;

@@ -15,7 +15,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class MesProduct {
     private Integer id;
-
+    private Integer productConsume;
     private Integer pId;
 
     private String productId;
@@ -203,4 +203,12 @@ public class MesProduct {
     public void setProductOperateIp(String productOperateIp) {
         this.productOperateIp = productOperateIp == null ? null : productOperateIp.trim();
     }
+
+	public Integer getProductConsume() {
+		return productConsume;
+	}
+
+	public void setProductConsume(Integer productConsume) {
+		this.productConsume = productConsume;
+	}
 }

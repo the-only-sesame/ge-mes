@@ -15,6 +15,7 @@ public class MesProductVo {
     private Integer id;
 
     private Integer pId;
+    private Integer productConsume;
     
     private String productId;
     

@@ -87,10 +87,21 @@
 									name="productRemark" value=""
 									class="text ui-widget-content ui-corner-all"></td>
 							</tr>
+							
 							<tr>
+								<td><label for="productConsume">炉耗</label></td>
+								<td><input id="input-productConsume" type="number"
+									name="productConsume" value=""
+									class="text ui-widget-content ui-corner-all"></td>
 								<td><label for="counts">批量生成个数</label></td>
 								<td><input id="input-counts" type="number" name="counts"
 									value="" class="text ui-widget-content ui-corner-all"></td>
+							</tr>
+							
+							<tr>
+								<!-- <td><label for="counts">批量生成个数</label></td>
+								<td><input id="input-counts" type="number" name="counts"
+									value="" class="text ui-widget-content ui-corner-all"></td> -->
 								<td><label for="submit">生成材料</label></td>
 								<td><input type="submit" value="点击按钮"
 									class="btn btn-info fa fa-check" /></td>
