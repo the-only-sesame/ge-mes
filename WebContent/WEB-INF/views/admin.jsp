@@ -161,7 +161,7 @@
 				</a> <b class="arrow"></b>
 					<ul class="submenu">
 						<li class=""><a class="popstyle"
-							href="/product/productinsert.page" target="_blank"> <i
+							href="/product/productInsert.page" target="_blank"> <i
 								class="menu-icon fa fa-caret-right"></i>材料管理
 						</a> <b class="arrow"></b></li>
 						<li class=""><a class="popstyle" href="/product/product.page"

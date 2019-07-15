@@ -33,6 +33,16 @@ public class PlanController {
 	}
 	
 	
+	//批量处理待执行计划启动
+		//批量启动处理
+		@ResponseBody
+		@RequestMapping("/planBatchStart.json")
+		public JsonData planBatchStart(String ids) {
+			planService.batchStartWithIds(ids);
+			return JsonData.success();
+		}
+	
+	
 	//分页显示
     @RequestMapping("/plan.json")
     @ResponseBody
