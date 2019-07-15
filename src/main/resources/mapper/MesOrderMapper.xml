@@ -20,6 +20,7 @@
     <result column="order_operator" property="orderOperator" jdbcType="VARCHAR" />
     <result column="order_operate_time" property="orderOperateTime" jdbcType="TIMESTAMP" />
     <result column="order_operate_ip" property="orderOperateIp" jdbcType="VARCHAR" />
+    
   </resultMap>
   <sql id="Base_Column_List" >
     id, order_id, order_clientname, order_productname, order_contractid, order_imgid, 

@@ -21,12 +21,13 @@
     <result column="product_operator" property="productOperator" jdbcType="VARCHAR" />
     <result column="product_operate_time" property="productOperateTime" jdbcType="TIMESTAMP" />
     <result column="product_operate_ip" property="productOperateIp" jdbcType="VARCHAR" />
+    <result column="product_consume" property="productConsume" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, p_id, product_id, product_orderid, product_planid, product_targetweight, product_realweight, 
     product_leftweight, product_bakweight, product_irontype, product_irontypeweight, 
     product_materialname, product_imgid, product_materialsource, product_status, product_remark, 
-    product_operator, product_operate_time, product_operate_ip
+    product_operator, product_operate_time, product_operate_ip,product_consume
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -114,6 +115,9 @@
       <if test="productOperateIp != null" >
         product_operate_ip,
       </if>
+      <if test="productConsume != null">
+      	product_consume
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -172,6 +176,9 @@
       </if>
       <if test="productOperateIp != null" >
         #{productOperateIp,jdbcType=VARCHAR},
+      </if>
+      <if test="productConsume != null">
+      	#{productConsume,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>

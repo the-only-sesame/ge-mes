@@ -21,6 +21,7 @@
     <result column="product_operator" property="productOperator" jdbcType="VARCHAR" />
     <result column="product_operate_time" property="productOperateTime" jdbcType="TIMESTAMP" />
     <result column="product_operate_ip" property="productOperateIp" jdbcType="VARCHAR" />
+    <result column="product_consume" property="productConsume" jdbcType="INTEGER" />
   </resultMap>
   
   <resultMap id="BaseDtoResultMap" type="com.mes.dto.ProductDto" >
@@ -43,6 +44,9 @@
     <result column="product_operator" property="productOperator" jdbcType="VARCHAR" />
     <result column="product_operate_time" property="productOperateTime" jdbcType="TIMESTAMP" />
     <result column="product_operate_ip" property="productOperateIp" jdbcType="VARCHAR" />
+    <result column="product_consume" property="productConsume" jdbcType="INTEGER" />
+    
+    
  	<association property="order" javaType="com.mes.model.MesOrder">
 	    <id column="orderid" property="id" jdbcType="INTEGER" />
 	    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
@@ -99,7 +103,7 @@
     mes_product.id,mes_product.p_id,mes_product.product_id,mes_product.product_orderid,mes_product.product_planid,mes_product.product_targetweight,mes_product.product_realweight, 
     mes_product.product_leftweight,mes_product.product_bakweight,mes_product.product_irontype,mes_product.product_irontypeweight, 
     mes_product.product_materialname,mes_product.product_imgid,mes_product.product_materialsource,mes_product.product_status,mes_product.product_remark, 
-    mes_product.product_operator,mes_product.product_operate_time,mes_product.product_operate_ip
+    mes_product.product_operator,mes_product.product_operate_time,mes_product.product_operate_ip,mes_product.product_consume
   </sql>
   
   <!-- plan -->
@@ -150,7 +154,7 @@
   	left join mes_product parent
   	on mes_product.p_id=parent.id
   	<include refid="queryProductConditions"></include>
-  	order by mes_order.order_committime desc
+  	order by mes_product.product_operate_time desc
   	limit #{page.offset},#{page.pageSize}
   </select>
   

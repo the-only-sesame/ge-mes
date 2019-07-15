@@ -100,9 +100,10 @@ public class ProductService {
 		int count = mesProductCustomerMapper.countBySearchDto(dto);
 		if (count > 0) {
 			List<ProductDto> productList = mesProductCustomerMapper.getPageListBySearchDto(dto, page);
+			
 			return PageResult.<ProductDto>builder().total(count).data(productList).build();
 		}
-
+		
 		return PageResult.<ProductDto>builder().build();
 	}
 	

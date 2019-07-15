@@ -1,5 +1,39 @@
 $(function() {
-	
+	var ids="";
+	$(".batchStart-btn").click(function(){
+		//拿到当前被选中的input-checkbox
+		var checks=$(".batchStart-check:checked");
+		if(checks.length!=null&&checks.length>0){
+			//拿到被选中的订单号
+			//mesorder-id
+			$.each(checks,function(i,check){
+				var id=$(check).closest("tr").attr("data-id");
+				ids+=id+"&";
+			});
+			//拼装ids
+			ids=ids.substr(0,ids.length-1);
+			//发送ajax请求
+			$.ajax({
+				url : "/product/productBatchStart.json",
+				data : {//左面是数据名称-键，右面是值
+					ids:ids
+				},
+				type : 'POST',
+				success : function(result) {//jsondata  jsondata.getData=pageResult  pageResult.getData=list
+					loadProductList();
+				}
+			});
+			ids="";//111&122&111&122
+		}
+	});
+
+	$(".batchStart-th").click(function(){
+		var checks=$(".batchStart-check");
+		$.each(checks,function(i,input){
+			//状态反选
+			input.checked=input.checked==true?false:true;
+		});
+	});
 	//执行分页逻辑
 			//定义一些全局变量
 			var productMap = {};//准备一个map格式的仓库，等待存储从后台返回过来的数据
@@ -115,7 +149,144 @@ $(function() {
 					showMessage("获取订单列表", result.msg, false);
 				}
 			}
-				
+			//////////////////////////////////////////////////////////////
+			$(".material-add").click(
+			function() {
+				//弹出框
+				$("#dialog-product-form").dialog(
+						{
+							model : true,//背景不可点击
+							title : "新建钢材",//模态框标题
+							open : function(event, ui) {
+								$(".ui-dialog").css("width", "700px");//增加模态框的宽高
+								$(".ui-dialog-titlebar-close",
+										$(this).parent()).hide();//关闭默认叉叉
+								optionStr = "";
+								$("#productForm")[0].reset();//清空模态框--jquery 将指定对象封装成了dom对象
+							},
+							buttons : {
+								"添加" : function(e) {
+									//阻止一下默认事件
+									e.preventDefault();
+									//发送新增plan的数据和接收添加后的回收信息
+									updateOrder(true, function(data) {
+										//增加成功了
+										//提示增加用户成功信息
+										showMessage("新增订单", data.msg,
+												true);
+										$("#dialog-product-form").dialog(
+												"close");
+			                         	loadProductList();//根据参数查看
+									}, function(data) {
+										//增加失败了
+										//						alert("添加失败了");
+										//信息显示
+										showMessage("新增钢材", data.msg,
+												false);
+										//						$("#dialog-plan-form").dialog("close");
+									});
+								},
+								"取消" : function() {
+									$("#dialog-product-form").dialog(
+											"close");
+								}
+							}
+						});
+			});			
+			//////////////////////////////////////////////////////////////
+			function bindProductClick(){
+				   $(".product-edit").click(function(e) {
+					//阻止默认事件
+		            e.preventDefault();
+					//阻止事件传播
+		            e.stopPropagation();
+					//获取planid
+		            var productId = $(this).attr("data-id");
+					//弹出plan的修改弹窗 
+		            $("#dialog-productUpdate-form").dialog({
+		                model: true,
+		                title: "编辑钢材",
+		                open: function(event, ui) {
+		             	    $(".ui-dialog").css("width","600px");
+		                    $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+		                  	//将form表单中的数据清空，使用jquery转dom对象
+		                    $("#productUpdateForm")[0].reset();
+		                  	//拿到map中以键值对，id-plan对象结构的对象,用来向form表单中传递数据
+		                    var targetOrder = productMap[productId];
+		                  	//如果取出这个对象
+		                    if (targetOrder) {
+								/////////////////////////////////////////////////////////////////
+								$("#input-id2").val(targetOrder.id);
+								$("#input-productImgid2").val(targetOrder.productImgid);
+								$("#input-productMaterialname2").val(targetOrder.productMaterialname);
+								$("#input-productMaterialsource2").val(targetOrder.productMaterialsource);
+								$("#input-productTargetweight2").val(targetOrder.productTargetweight);
+								$("#input-productIrontypeweight2").val(targetOrder.productIrontypeweight);
+								$("#input-productIrontype2").val(targetOrder.productIrontype);
+								$("#input-productRemark2").val(targetOrder.productRemark);
+								$("#input-productRealweight2").val(targetOrder.productRealweight);
+								$("#input-productLeftweight2").val(targetOrder.productLeftweight);
+								/////////////////////////////////////////////////////////////////
+		                    }
+		                },
+		                buttons : {
+		                    "更新": function(e) {
+		                        e.preventDefault();
+		                        updateOrder(false, function (data) {
+		                            $("#dialog-productUpdate-form").dialog("close");
+		            				$("#productPage .pageNo").val(1);
+		            				loadProductList();
+		                        }, function (data) {
+		                            showMessage("更新材料", data.msg, false);
+		                        })
+		                    },
+		                    "取消": function (data) {
+		                        $("#dialog-productUpdate-form").dialog("close");
+		                    }
+		                }
+		            });
+		        });
+			   }  
+			//////////////////////////////////////////////////////////////
+			//新增和修改plan的通用方法-dml
+		//isCreate是否是新增订单(true,false)，如果不是，执行修改
+		//successCallbak function(data)  failCallbak function(data)
+		function updateOrder(isCreate, successCallbak, failCallbak) {
+			$.ajax({
+				url : isCreate ? "/product/insert.json"
+						: "/product/update.json",
+				data : isCreate ? $("#productForm").serializeArray() : $(
+						"#productUpdateForm").serializeArray(),
+				type : 'POST',
+				success : function(result) {
+					//数据执行成功返回的消息
+					if (result.ret) {
+						loadProductList(); // 带参数回调
+						//带参数回调
+						if (successCallbak) {
+							successCallbak(result);
+						}
+					} else {
+						//执行失败后返回的内容
+						if (failCallbak) {
+							failCallbak(result);
+						}
+					}
+				}
+			});
+		}
+		//////////////////////////////////////////////////////////////
+			//日期显示
+			$('.datepicker').datepicker({
+				dateFormat : 'yy-mm-dd',
+				showOtherMonths : true,
+				selectOtherMonths : false
+			});
 			
+			$('.datepicker2').datepicker({
+				dateFormat : 'yy-mm-dd',
+				showOtherMonths : true,
+				selectOtherMonths : false
+			});
 			
 		});
