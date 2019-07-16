@@ -4,7 +4,7 @@
  <tr role="row" class="productMaterialname odd" data-id="{{id}}"><!--even -->
 	<td><input name="checkbox" type="checkbox" class="batchStart-check"/></td>
 	<td>{{productId}}</td>
-	<td>{{parent.productId}}</td>
+	<td>{{productOperateIp}}</td>
 	<td>{{productConsume}}</td>
 	<td>{{productMaterialname}}</td>
 	<td>{{productMaterialsource}}</td>

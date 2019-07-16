@@ -1,8 +1,12 @@
 package com.mes.service;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -54,8 +58,9 @@ public class ProductService {
 		if (counts != null && counts > 0) {
 			for (String productid : ids) {
 				try {
-				//批量增加-productDto
-				MesProduct pd = MesProduct.builder().productId(productid)//UUIDUtil.generateUUID(
+					//builder不会出现线程安全问题
+				//批量增加前填充model数据模型                                                                               //随机生成工具UUID
+				MesProduct pd = MesProduct.builder().productId(productid)//UUIDUtil.generateUUID
 						.productTargetweight(productVo.getProductTargetweight())//
 						.productRealweight(productVo.getProductRealweight())//
 						.productLeftweight(productVo.getProductLeftweight())//
@@ -68,11 +73,30 @@ public class ProductService {
 						.productStatus(productVo.getProductStatus())//
 						.productConsume(productVo.getProductConsume())//
 						.productRemark(productVo.getProductRemark()).build();
-				pd.setProductOperateIp("127.0.0.1");
+				
+				StringBuilder sb = new StringBuilder();
+		        try {
+		            Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces();//获取本地所有网络接口
+		            while (en.hasMoreElements()) {//遍历枚举中的每一个元素
+		                NetworkInterface ni= (NetworkInterface) en.nextElement();
+		                Enumeration<InetAddress> enumInetAddr = ni.getInetAddresses();
+		                while (enumInetAddr.hasMoreElements()) {
+		                    InetAddress inetAddress = (InetAddress) enumInetAddr.nextElement();
+		                    if (!inetAddress.isLoopbackAddress()  && !inetAddress.isLinkLocalAddress()
+		                            && inetAddress.isSiteLocalAddress()) {
+		                    	pd.setProductOperateIp(inetAddress.getHostAddress());
+		                    	pd.setProductOperator(inetAddress.getHostName());
+		                        sb.append("name:" + inetAddress.getHostName().toString()+"\n");
+		                        sb.append("ip:" + inetAddress.getHostAddress().toString()+"\n");
+		                    }
+		                }
+		            }
+		        } catch (SocketException e) {  }
+		        System.out.println(sb.toString());
 				pd.setProductOperateTime(new Date());
-				pd.setProductOperator("user01");
+				
 				MesProductMapper mapper = sqlSession.getMapper(MesProductMapper.class);
-				//批量增加
+				//执行批量增加
 				mapper.insertSelective(pd);
 				} catch (Exception e) {
 					throw new SysMineException("创建过程有问题");

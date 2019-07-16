@@ -1,5 +1,10 @@
 package com.mes.controller;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -27,6 +32,8 @@ public class ProductController {
 	//增加材料页面显示
 	@RequestMapping("/productInsert.page")
 	public String productInsertPage() {
+
+
 		return FPATH+"/productinsert";
 	}
 	
@@ -47,7 +54,7 @@ public class ProductController {
 	}
 	
 	
-	//材料分页
+	//材料分页模块
 	@RequestMapping("/product.json")
 	@ResponseBody
 	public JsonData searchPage(SearchProductParam param, PageQuery page) {
