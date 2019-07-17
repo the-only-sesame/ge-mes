@@ -23,19 +23,20 @@ import com.mes.dao.MesProductMapper;
 import com.mes.dto.ProductDto;
 import com.mes.dto.SearchProductDto;
 import com.mes.exception.SysMineException;
+import com.mes.model.MesOrder;
 import com.mes.model.MesProduct;
+import com.mes.model.MesStock;
 import com.mes.param.MesProductVo;
 import com.mes.param.SearchProductParam;
-import com.mes.service.OrderService.IdGenerator;
 import com.mes.util.BeanValidator;
-import com.mes.util.UUIDUtil;
 
 @Service
 public class ProductService {
 
 	@Resource
 	private SqlSession sqlSession;
-	
+	@Resource
+	private MesOrderMapper mesOrderMapper;
 	@Resource
 	private MesProductMapper mesProductMapper;
 	
@@ -44,6 +45,26 @@ public class ProductService {
 	// 一开始就定义一个id生成器
 		private IdGenerator ig = new IdGenerator();
 	
+		
+		// 批量启动
+		public void batchStart(String ids) {
+			if (StringUtils.isNotEmpty(ids)) {
+				MesProductMapper mapper = sqlSession.getMapper(MesProductMapper.class);
+				String[] idStrs = ids.split("&");
+				for (String id : idStrs) {
+					MesProduct mesProduct = mapper.selectByPrimaryKey(Integer.parseInt(id));
+					mesProduct.setProductStatus(1);
+					mesProduct.setProductOperateTime(new Date());
+					mapper.updateByPrimaryKeySelective(mesProduct);
+					
+				}
+			}
+		}
+		
+		
+		
+		
+		
 	//增加材料模块
 	public void insert(MesProductVo productVo) {
 		//校验
@@ -121,7 +142,9 @@ public class ProductService {
 		if (param.getSearch_status() != null) {
 			dto.setSearch_status(param.getSearch_status());
 		}
+		
 		int count = mesProductCustomerMapper.countBySearchDto(dto);
+		
 		if (count > 0) {
 			List<ProductDto> productList = mesProductCustomerMapper.getPageListBySearchDto(dto, page);
 			
@@ -227,7 +250,7 @@ public class ProductService {
 
 		private String getIdPre() {
 			// idpre==null?this.idpre="ZX":this.idpre=idpre;
-			this.idpre = "YC-117-";
+			this.idpre = "mes-YYY-";
 			return this.idpre;
 		}
 
@@ -247,6 +270,8 @@ public class ProductService {
 			return "IdGenerator [ids=" + ids + "]";
 		}
 	}
+
+	
 	
 
 

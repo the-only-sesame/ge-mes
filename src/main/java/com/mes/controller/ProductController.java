@@ -29,6 +29,19 @@ public class ProductController {
 	@Resource
 	private ProductService productService;
 	
+	//倒库查询页面显示
+	@RequestMapping("/productCome.page")
+	public String productCome() {
+		return FPATH+"/productCome";
+	}
+	//材料批量启动
+	@RequestMapping("/productBatchStart.json")
+	public String productBatchStart(String ids) {
+	    productService.batchStart(ids);
+		return FPATH+"/product";
+	}
+	
+	
 	//增加材料页面显示
 	@RequestMapping("/productInsert.page")
 	public String productInsertPage() {
