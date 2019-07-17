@@ -15,5 +15,9 @@ public interface MesProductCustomerMapper {
 	List<ProductDto> getPageListBySearchDto(@Param("dto")SearchProductDto dto, @Param("page")PageQuery page);
 
 	Long getProductCount();
+
+	int countBySearchBindListDto(@Param("dto")SearchProductDto dto);
+
+	List<ProductDto> getPageListBySearchBindListDto(@Param("dto")SearchProductDto dto, @Param("page")PageQuery page);
    
 }

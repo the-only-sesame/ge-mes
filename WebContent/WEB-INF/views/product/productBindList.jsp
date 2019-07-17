@@ -8,16 +8,16 @@
 <jsp:include page="/template/orderListTemplate.jsp" /> --%>
 <%@ include file="/common/backend_common.jsp" %>
 <%@ include file="/common/page.jsp" %>
-<%@ include file="/template/product/productComeListTemplate.jsp" %>
-<script src="product.js"></script> 
+<%@ include file="/template/product/productBindListTemplate.jsp" %>
+<script src="productBindList.js"></script> 
 </head>
 <body class="no-skin" youdao="bind" style="background: white">
 	<input id="gritter-light" checked="" type="checkbox"
 		class="ace ace-switch ace-switch-5" />
 	<div class="page-header">
 		<h1>
-			材料管理 <small><i class="ace-icon fa fa-angle-double-right"></i>
-				创建与查询 </small>
+			绑定列表 <small><i class="ace-icon fa fa-angle-double-right"></i>
+				查询 </small>
 		</h1>
 	</div>
 	<div class="main-content-inner">
@@ -52,16 +52,16 @@
 									</select>
 									</label>
 									-->
-									 <input type="hidden" id="search_status" name="search_status" value="1"/>
+									 <input  id="search_status" type="hidden" name="search_status" value="1"/>
  									 <label>
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;材料来源 <select
 										id="search_source" name="search_source"
 										aria-controls="dynamic-table" class="form-control input-sm">
-											<option value=""></option>
 											<option value="钢材">钢材</option>
 											<option value="废料">废料</option>
 											<option value="外购件">外购件</option>
 											<option value="外协件">外协件</option>
+											<option value="钢锭">钢锭</option>
 									</select>
 									</label> 
 									&nbsp;&nbsp;&nbsp;&nbsp;
@@ -80,7 +80,7 @@
 										colspan="1">材料自编号</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">IP地址</th>
-									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
+										<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">炉耗</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">材料名称</th>
@@ -92,6 +92,8 @@
 										colspan="1">投料重量</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">剩余重量</th>
+									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
+										colspan="1">绑定剩余</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">图号</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
@@ -114,7 +116,7 @@
 			</div>
 		</div>
 	</div>
-	<%-- <%@ include file="productForm/productForm.jsp" %>
-	<%@ include file="productForm/productUpdateForm.jsp" %> --%>
+	<%@ include file="productForm/productForm.jsp" %>
+	<%@ include file="productForm/productUpdateForm.jsp" %>
 </body>
 </html>

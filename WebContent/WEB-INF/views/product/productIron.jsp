@@ -3,9 +3,6 @@
 <head>
 <title>材料管理</title>
 <!-- jsp动态导入 -->
-<%-- <jsp:include page="/common/backend_common.jsp" />
-<jsp:include page="/common/page.jsp" />
-<jsp:include page="/template/orderListTemplate.jsp" /> --%>
 <%@ include file="/common/backend_common.jsp" %>
 <%@ include file="/common/page.jsp" %>
 <%@ include file="/template/product/productComeListTemplate.jsp" %>
@@ -42,7 +39,6 @@
 									</label> <input id="keyword" type="search" name="keyword"
 										class="form-control input-sm" placeholder="关键词"
 										aria-controls="dynamic-table">
-									<!-- 
 									<label>
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否有效<select
 										id="search_status" name="search_status"
@@ -51,19 +47,18 @@
 											<option value="1">已到库</option>
 									</select>
 									</label>
-									-->
-									 <input type="hidden" id="search_status" name="search_status" value="1"/>
- 									 <label>
+<!-- 									 <input type="hidden" id="search_status" name="search_status" value="0"/>
+ --> 									 <input type="hidden" id="search_source" name="search_source" value="钢锭"/>
+ 									 <!-- <label>
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;材料来源 <select
 										id="search_source" name="search_source"
 										aria-controls="dynamic-table" class="form-control input-sm">
-											<option value=""></option>
 											<option value="钢材">钢材</option>
 											<option value="废料">废料</option>
 											<option value="外购件">外购件</option>
 											<option value="外协件">外协件</option>
 									</select>
-									</label> 
+									</label>  -->
 									&nbsp;&nbsp;&nbsp;&nbsp;
 									<button class="btn btn-info fa fa-check research"
 										style="margin-bottom: 6px;" type="button">刷新</button>
@@ -80,7 +75,7 @@
 										colspan="1">材料自编号</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">IP地址</th>
-									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
+										<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">炉耗</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">材料名称</th>
@@ -91,7 +86,7 @@
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">投料重量</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
-										colspan="1">剩余重量</th>
+										colspan="1">剩余重量</th>										
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">图号</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"

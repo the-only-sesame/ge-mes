@@ -3,7 +3,8 @@
 {{#productList}}
  <tr role="row" class="material-name odd" data-id="{{id}}"><!--even -->
 	<td>{{productId}}</td>
-	<td>{{parent.productId}}</td>
+	<td>{{productOperateIp}}</td>
+	<td>{{productConsume}}</td>
 	<td>{{productMaterialname}}</td>
 	<td>{{productMaterialsource}}</td>
 	<td>{{productTargetweight}}</td>

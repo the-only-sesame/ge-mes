@@ -26,8 +26,30 @@ public class ProductController {
 
 	private static String FPATH="product";
 	
+	
+	
+	@RequestMapping("/productBindList")
+	public String productBindList() {
+		return FPATH+"/productBindList";
+	}
+	//绑定钢材分页显示
+    @RequestMapping("/productBindList.json")
+    @ResponseBody
+	public JsonData searchBindListPage(SearchProductParam param, PageQuery page) {
+		PageResult<ProductDto> pr=(PageResult<ProductDto>) productService.searchPageBindList(param, page);
+		return JsonData.success(pr);
+	}
+	
+	
 	@Resource
 	private ProductService productService;
+	//钢锭查询界面显示
+	@RequestMapping("/productIron")
+	public String productIron() {
+		return FPATH+"/productIron";
+	}
+	
+	
 	
 	//倒库查询页面显示
 	@RequestMapping("/productCome.page")

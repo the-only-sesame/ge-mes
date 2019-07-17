@@ -46,6 +46,36 @@ public class ProductService {
 		private IdGenerator ig = new IdGenerator();
 	
 		
+		
+		public PageResult<ProductDto> searchPageBindList(SearchProductParam param, PageQuery page) {
+			// 校验
+			BeanValidator.check(page);
+			// vo-dto
+			SearchProductDto dto = new SearchProductDto();
+
+			if (StringUtils.isNotBlank(param.getKeyword())) {
+				dto.setKeyword("%" + param.getKeyword() + "%");
+			}
+			
+			if (StringUtils.isNotBlank(param.getSearch_source())) {
+				dto.setSearch_source(param.getSearch_source());
+			}
+			
+			if (param.getSearch_status() != null) {
+				dto.setSearch_status(param.getSearch_status());
+			}
+
+			int count = mesProductCustomerMapper.countBySearchBindListDto(dto);
+
+			if (count > 0) {
+				List<ProductDto> productList = mesProductCustomerMapper.getPageListBySearchBindListDto(dto, page);
+				return PageResult.<ProductDto>builder().total(count).data(productList).build();
+			}
+
+			return PageResult.<ProductDto>builder().build();
+		}
+
+		
 		// 批量启动
 		public void batchStart(String ids) {
 			if (StringUtils.isNotEmpty(ids)) {
@@ -270,6 +300,8 @@ public class ProductService {
 			return "IdGenerator [ids=" + ids + "]";
 		}
 	}
+
+	
 
 	
 	
