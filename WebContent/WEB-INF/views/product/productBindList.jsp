@@ -9,7 +9,7 @@
 <%@ include file="/common/backend_common.jsp" %>
 <%@ include file="/common/page.jsp" %>
 <%@ include file="/template/product/productBindListTemplate.jsp" %>
-<script src="productBindList.js"></script> 
+<script src="productBindLista.js"></script> 
 </head>
 <body class="no-skin" youdao="bind" style="background: white">
 	<input id="gritter-light" checked="" type="checkbox"

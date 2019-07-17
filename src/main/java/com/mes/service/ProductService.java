@@ -45,7 +45,15 @@ public class ProductService {
 	// 一开始就定义一个id生成器
 		private IdGenerator ig = new IdGenerator();
 	
-		
+		public MesProduct selectById(String id) {
+			if (StringUtils.isNotBlank(id) && StringUtils.isNotEmpty(id)) {
+				MesProduct product = mesProductMapper.selectByPrimaryKey(Integer.parseInt(id));
+				if (null != product) {
+					return product;
+				}
+			}
+			throw new RuntimeException("没有这个材料");
+		}	
 		
 		public PageResult<ProductDto> searchPageBindList(SearchProductParam param, PageQuery page) {
 			// 校验

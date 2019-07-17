@@ -1,13 +1,9 @@
 package com.mes.controller;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Enumeration;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -16,6 +12,7 @@ import com.mes.beans.PageResult;
 import com.mes.common.JsonData;
 import com.mes.common.SameUrlData;
 import com.mes.dto.ProductDto;
+import com.mes.model.MesProduct;
 import com.mes.param.MesProductVo;
 import com.mes.param.SearchProductParam;
 import com.mes.service.ProductService;
@@ -26,7 +23,18 @@ public class ProductController {
 
 	private static String FPATH="product";
 	
-	
+	//待绑定钢材的页面跳转
+		@RequestMapping("/productBind.page")
+		public String productBindPage(String id,Model model) {
+			//通过id拿到product的对象
+			MesProduct mesProduct=productService.selectById(id);
+			if(mesProduct!=null) {
+				model.addAttribute("product",mesProduct);
+				return FPATH+"/productBind";
+			}else {
+				return FPATH+"/productBindList";
+			}
+		}
 	
 	@RequestMapping("/productBindList")
 	public String productBindList() {
