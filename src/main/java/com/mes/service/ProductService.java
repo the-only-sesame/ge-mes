@@ -42,7 +42,26 @@ public class ProductService {
 	
 	//钢锭解绑的逻辑
 	public boolean unbound(String childId) {
-		// TODO Auto-generated method stub
+		if(StringUtils.isNoneBlank(childId)&&StringUtils.isNotEmpty(childId)) {
+			Integer cid=Integer.parseInt(childId);
+			MesProduct product=mesProductMapper.selectByPrimaryKey(cid);
+			//解绑过程需要查看投料重量是否为空，如果为空则可以解绑
+			if(product.getProductRealweight()!=null&&product.getProductRealweight()>0) {
+				return false;
+			}
+			//status-0
+			product.setProductStatus(0);
+			//backweight-0
+			product.setProductBakweight(0f);
+			//pid-null
+			Integer pid=product.getpId();
+			product.setpId(null);
+			MesProduct parent=mesProductMapper.selectByPrimaryKey(pid);
+			parent.setProductBakweight(parent.getProductBakweight()+product.getProductTargetweight());
+			//执行绑定双方修改
+			mesProductMapper.updateByPrimaryKey(product);
+			mesProductMapper.updateByPrimaryKeySelective(parent);
+		}
 		return false;
 	}
 
