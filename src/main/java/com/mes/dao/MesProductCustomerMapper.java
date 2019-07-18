@@ -19,5 +19,13 @@ public interface MesProductCustomerMapper {
 	int countBySearchBindListDto(@Param("dto")SearchProductDto dto);
 
 	List<ProductDto> getPageListBySearchBindListDto(@Param("dto")SearchProductDto dto, @Param("page")PageQuery page);
+
+	int countBySearchChildBindListDto(@Param("dto")SearchProductDto dto);
+
+	List<ProductDto> getPageListBySearchChildBindListDto(@Param("dto")SearchProductDto dto, @Param("page")PageQuery page);
+
+	int countBySearchParentBindListDto(@Param("dto")SearchProductDto dto);
+
+	List<ProductDto> getPageListBySearchParentBindListDto(@Param("dto")SearchProductDto dto, @Param("page")PageQuery page);
    
 }

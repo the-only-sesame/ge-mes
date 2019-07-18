@@ -23,6 +23,39 @@ public class ProductController {
 
 	private static String FPATH="product";
 	
+	//钢材解绑钢锭
+		@RequestMapping("/parentUnbound.json")
+		@ResponseBody
+	    public JsonData unbound(String childId) {
+	    	boolean result=productService.unbound(childId);
+	    	return JsonData.success(result);
+	    }
+	//钢材已绑定的钢锭显示
+		@RequestMapping("/productParentBindList.json")
+		@ResponseBody
+	    public JsonData searchParentBindListPage(SearchProductParam param, PageQuery page) {
+	    	PageResult<ProductDto> pr=(PageResult<ProductDto>) productService.searchPageParentBindList(param, page);
+	    	return JsonData.success(pr);
+	    }
+		//绑定逻辑
+		@RequestMapping("/bind.json")
+		@ResponseBody
+	    public JsonData bind(String parentId,String childId) {
+			productService.bind(parentId,childId);
+	    	return JsonData.success(true);
+	    }
+	
+	//绑定材料分页显示
+		@RequestMapping("/productChildBindList.json")
+		@ResponseBody
+	    public JsonData searchChildBindListPage(SearchProductParam param, PageQuery page) {
+	    	PageResult<ProductDto> pr=(PageResult<ProductDto>) productService.searchPageChildBindList(param, page);
+	    	System.out.println(pr);
+	    	return JsonData.success(pr);
+	    }
+	
+	
+	
 	//待绑定钢材的页面跳转
 		@RequestMapping("/productBind.page")
 		public String productBindPage(String id,Model model) {

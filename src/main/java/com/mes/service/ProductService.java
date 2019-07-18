@@ -40,6 +40,83 @@ public class ProductService {
 	@Resource
 	private MesProductMapper mesProductMapper;
 	
+	//钢锭解绑的逻辑
+	public boolean unbound(String childId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
+	
+	//钢材绑定钢锭的逻辑
+	public void bind(String parentId, String childId) {
+			Integer pid=Integer.parseInt(parentId);
+			Integer cid=Integer.parseInt(childId);
+			
+			MesProduct parent=mesProductMapper.selectByPrimaryKey(pid);
+			MesProduct child=mesProductMapper.selectByPrimaryKey(cid);
+			
+			//钢材的理论剩余和真实剩余比钢锭的工艺重量大或等
+			//后台的健壮性判断，防止页面js效果失效
+			if(parent.getProductLeftweight()>=parent.getProductBakweight()&&parent.getProductBakweight()>=child.getProductTargetweight()) {
+				//计算钢材的剩余理论重量剩余值
+				parent.setProductBakweight(parent.getProductBakweight()-child.getProductTargetweight());
+				//计算钢锭的理论重量剩余值，修改status为真，绑定pid
+				child.setpId(pid);
+				child.setProductBakweight(child.getProductTargetweight());
+				child.setProductStatus(1);
+				//更新parent与child  钢材 与 钢锭
+				mesProductMapper.updateByPrimaryKeySelective(parent);
+				mesProductMapper.updateByPrimaryKeySelective(child);
+			}
+		}
+	
+	
+	//钢材绑定的钢锭列表
+		public PageResult<ProductDto> searchPageParentBindList(SearchProductParam param, PageQuery page) {
+			// 校验
+			BeanValidator.check(page);
+			// vo-dto
+			SearchProductDto dto = new SearchProductDto();
+			if (StringUtils.isNotBlank(param.getSearch_source())) {
+				dto.setSearch_source(param.getSearch_source());
+			}
+			if(param.getPid()!=null) {
+				dto.setPid(param.getPid());
+			}
+			int count = mesProductCustomerMapper.countBySearchParentBindListDto(dto);
+
+			if (count > 0) {
+				List<ProductDto> productList = mesProductCustomerMapper.getPageListBySearchParentBindListDto(dto, page);
+				return PageResult.<ProductDto>builder().total(count).data(productList).build();
+			}
+
+			return PageResult.<ProductDto>builder().build();
+		}
+	
+	// 钢材绑定子材料分页显示
+	public PageResult<ProductDto> searchPageChildBindList(SearchProductParam param, PageQuery page) {
+			// 校验
+		BeanValidator.check(page);
+			// vo-dto
+		SearchProductDto dto = new SearchProductDto();
+		if (StringUtils.isNotBlank(param.getSearch_source())) {
+			dto.setSearch_source(param.getSearch_source());
+		}
+		int count = mesProductCustomerMapper.countBySearchChildBindListDto(dto);
+
+		if (count > 0) {
+			List<ProductDto> productList = mesProductCustomerMapper.getPageListBySearchChildBindListDto(dto, page);
+			return PageResult.<ProductDto>builder().total(count).data(productList).build();
+		}
+
+		return PageResult.<ProductDto>builder().build();
+	}
+	
+	
+	
+	
+	
 	@Resource
 	private MesProductCustomerMapper mesProductCustomerMapper;
 	// 一开始就定义一个id生成器
@@ -308,6 +385,7 @@ public class ProductService {
 			return "IdGenerator [ids=" + ids + "]";
 		}
 	}
+
 
 	
 

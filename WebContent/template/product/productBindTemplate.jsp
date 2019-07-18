@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<script id="productListTemplate" type="x-tmpl-mustache">
+<script id="productBindTemplate" type="x-tmpl-mustache">
 {{#productList}}
  <tr role="row" class="product-name odd" data-id="{{id}}"><!--even -->
 	<td>{{productId}}</td>

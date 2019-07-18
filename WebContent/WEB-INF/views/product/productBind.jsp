@@ -26,7 +26,8 @@
 
 			<div class="col-xs-6 col-md-6 col-lg-6">
 				<div class="table-header">
-					未绑定材料列表&nbsp;&nbsp; <a class="green" href="#">
+					未绑定材料列表&nbsp;&nbsp; 
+					<a class="green" href="#">
 						<!--  <i
 						class="ace-icon fa fa-plus-circle orange bigger-130 material-add"></i> -->
 					</a>
@@ -37,11 +38,13 @@
 						<div class="row" style="position: relative;height: 90%">
 							<div class="col-xs-12">
 								<div class="dataTables_length" id="dynamic-table_length">
+									<label> 展示 <select id="pageSize" name="dynamic-table_length" aria-controls="dynamic-table" class="form-control input-sm"><option value="8">8</op8ion></select> 条记录
+								
 									<input  type="hidden" class="bind-id" value="${product.id}"/>
 									原料编号<input id="keyword" type="search" name="keyword"
 										class="form-control input-sm" placeholder="关键词"
 										aria-controls="dynamic-table" readonly="readonly" value="${product.productId}">
-									理论剩余重量<input class="leftback-weight" type="text" readonly="readonly" value="${product.productBakweight}"/>
+									理论剩余重量<input style="width:50px" class="leftback-weight" type="text" readonly="readonly" value="${product.productBakweight}"/>
 									<br/>剩余重量<input class="left-weight" type="text" readonly="readonly" value="${product.productLeftweight}"/>
 									<!-- 
 									<label>
@@ -92,6 +95,7 @@
 							<table class="table table-striped table-bordered table-hover dataTable no-footer">
 								<tbody id="productList"></tbody>
 							</table>
+							<div class="row" id="productPage"></div>
 							</div>
 						</div>
 					</div>
@@ -109,6 +113,7 @@
 					<div id="dynamic-table_wrapper"
 						class="dataTables_wrapper form-inline no-footer">
 						<div class="row" style="height: 90%; position: relative;">
+						
 							<table id="dynamic-table"
 								class="table table-striped table-bordered table-hover dataTable no-footer"
 								role="grid" aria-describedby="dynamic-table_info"
@@ -133,6 +138,7 @@
 							<table class="table table-striped table-bordered table-hover dataTable no-footer">
 								<tbody id="productBoundList"></tbody>
 							</table>
+							<div class="row" id="product2Page"></div>
 							</div>
 						</div>
 					</div>
